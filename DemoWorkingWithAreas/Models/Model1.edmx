@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="vizagdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblUserDetails">
+          <Key>
+            <PropertyRef Name="regno" />
+          </Key>
+          <Property Name="regno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fullname" Type="varchar(max)" Nullable="false" />
+          <Property Name="email" Type="varchar(max)" Nullable="false" />
+          <Property Name="mobile" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="username" Type="varchar(max)" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="usertype" Type="int" />
+        </EntityType>
+        <EntityType Name="tblUserType">
+          <Key>
+            <PropertyRef Name="userType" />
+          </Key>
+          <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userDesp" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="userType" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="fkusrtpe">
+          <End Role="tblUserType" Type="Self.tblUserType" Multiplicity="0..1" />
+          <End Role="tblUserDetails" Type="Self.tblUserDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUserType">
+              <PropertyRef Name="userType" />
+            </Principal>
+            <Dependent Role="tblUserDetails">
+              <PropertyRef Name="usertype" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="vizagdbModelStoreContainer">
+          <EntitySet Name="tblUserDetails" EntityType="Self.tblUserDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserType" EntityType="Self.tblUserType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fkusrtpe" Association="Self.fkusrtpe">
+            <End Role="tblUserType" EntitySet="tblUserType" />
+            <End Role="tblUserDetails" EntitySet="tblUserDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="vizagdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblUserDetail">
+          <Key>
+            <PropertyRef Name="regno" />
+          </Key>
+          <Property Name="regno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fullname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="mobile" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="usertype" Type="Int32" />
+          <NavigationProperty Name="tblUserType" Relationship="Self.fkusrtpe" FromRole="tblUserDetails" ToRole="tblUserType" />
+        </EntityType>
+        <EntityType Name="tblUserType">
+          <Key>
+            <PropertyRef Name="userType" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userDesp" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userType" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblUserDetails" Relationship="Self.fkusrtpe" FromRole="tblUserType" ToRole="tblUserDetails" />
+        </EntityType>
+        <Association Name="fkusrtpe">
+          <End Role="tblUserType" Type="Self.tblUserType" Multiplicity="0..1" />
+          <End Role="tblUserDetails" Type="Self.tblUserDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUserType">
+              <PropertyRef Name="userType" />
+            </Principal>
+            <Dependent Role="tblUserDetails">
+              <PropertyRef Name="usertype" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VizagDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblUserDetails" EntityType="Self.tblUserDetail" />
+          <EntitySet Name="tblUserTypes" EntityType="Self.tblUserType" />
+          <AssociationSet Name="fkusrtpe" Association="Self.fkusrtpe">
+            <End Role="tblUserType" EntitySet="tblUserTypes" />
+            <End Role="tblUserDetails" EntitySet="tblUserDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="vizagdbModelStoreContainer" CdmEntityContainer="VizagDbEntities">
+          <EntitySetMapping Name="tblUserDetails">
+            <EntityTypeMapping TypeName="vizagdbModel.tblUserDetail">
+              <MappingFragment StoreEntitySet="tblUserDetails">
+                <ScalarProperty Name="regno" ColumnName="regno" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="usertype" ColumnName="usertype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserTypes">
+            <EntityTypeMapping TypeName="vizagdbModel.tblUserType">
+              <MappingFragment StoreEntitySet="tblUserType">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="userDesp" ColumnName="userDesp" />
+                <ScalarProperty Name="userType" ColumnName="userType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
